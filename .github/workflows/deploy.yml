@@ -5,11 +5,25 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias y Pytest
+        run: |
+          pip install pytest
+
+      - name: Ejecutar Pruebas Automatizadas (QA)
+        run: |
+          pytest test/test_basico.py
+      # ------------------------------
 
       - name: Configurar credenciales de AWS
         uses: aws-actions/configure-aws-credentials@v1
@@ -24,9 +38,5 @@ jobs:
           aws ssm send-command \
             --instance-ids "i-0ec0c0457931eed44" \
             --document-name "AWS-RunShellScript" \
-            --parameters '{
-              "commands": [
-                "bash /home/ubuntu/environment/proyecto-st/scripts/deploy_ssm.sh"
-              ]
-            }' \
+            --parameters '{"commands": ["bash /home/ubuntu/environment/proyecto-st/scripts/deploy_ssm.sh"]}' \
             --region us-east-1
