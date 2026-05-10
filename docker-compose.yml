@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  fintech-web:
+    build: ./app
+    container_name: stf-plataforma
+    ports:
+      - "8080:5000"
+    networks:
+      - red-fintech
+    restart: always
+    environment:
+      - FLASK_ENV=production
+
+networks:
+  red-fintech:
+    driver: bridge
