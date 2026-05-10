@@ -36,7 +36,7 @@ jobs:
       - name: Ejecutar comandos de despliegue vía SSM
         run: |
           aws ssm send-command \
-            --instance-ids "i-0ec0c0457931eed44" \
+            --instance-ids "i-0c0cd6433017a8e78" \
             --document-name "AWS-RunShellScript" \
             --parameters '{"commands": ["bash /home/ubuntu/environment/proyecto-st/scripts/deploy_ssm.sh"]}' \
             --region us-east-1
