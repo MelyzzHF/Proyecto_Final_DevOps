@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - echo "Instalando dependencias de prueba..."
+      - pip install pytest
+
+  pre_build:
+    commands:
+      - echo "Validando sintaxis de scripts de la Fintech..."
+      - python3 -m py_compile scripts/*.py
+      - echo "Validando archivos de configuración..."
+      - docker-compose config -q
+
+
+  build:
+    commands:
+      - echo "Ejecutando pruebas con pytest..."
+      - pytest tests/test_basico.py
+      - echo "Pruebas aprobadas con éxito."
+
+artifacts:
+  files:
+    - '**/*'
