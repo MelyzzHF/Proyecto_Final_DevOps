@@ -1,5 +1,5 @@
 #!/bin/bash
-# Automatización para entornos Ubuntu
+# Automatización para entornos Ubuntu en Cloud9
 set -e
 
 echo "Actualizando paquetes..."
