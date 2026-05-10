@@ -16,8 +16,13 @@ def test_estructura_proyecto():
 # 2. PRUEBA DE CONFIGURACIÓN (Docker Compose)
 def test_validacion_docker_compose():
     """Valida que el archivo docker-compose no tenga errores de sintaxis"""
-    resultado = subprocess.run(["docker-compose", "config", "-q"], capture_output=True)
-    assert resultado.returncode == 0, "Error de sintaxis en docker-compose.yml"
+    # Intentamos primero con 'docker compose' (Estándar nuevo)
+    resultado = subprocess.run(["docker", "compose", "config", "-q"], capture_output=True)
+    # Si falla porque no conoce el comando, intentamos con el viejo 'docker-compose'
+    if resultado.returncode != 0:
+        resultado = subprocess.run(["docker-compose", "config", "-q"], capture_output=True)
+
+    assert resultado.returncode == 0, "Error de sintaxis en docker-compose.yml o Docker no instalado"
 # 3. PRUEBA DE SEGURIDAD (Permisos de Scripts)
 def test_permisos_scripts():
     """Verifica que los scripts tengan permisos de ejecución"""
