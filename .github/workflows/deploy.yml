@@ -24,14 +24,9 @@ jobs:
           aws ssm send-command \
             --instance-ids "i-0ec0c0457931eed44" \
             --document-name "AWS-RunShellScript" \
-            --comment "Despliegue automático de la Fintech S.T.F." \
             --parameters '{
               "commands": [
-                "cd /home/ubuntu/environment/proyecto-st",
-                "git pull origin develop",
-                "docker-compose down",
-                "docker-compose up -d --build",
-                "echo \"Despliegue completado con éxito\""
+                "bash /home/ubuntu/environment/proyecto-st/scripts/deploy_ssm.sh"
               ]
             }' \
             --region us-east-1
