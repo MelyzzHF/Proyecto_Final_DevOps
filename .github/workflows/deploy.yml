@@ -38,5 +38,5 @@ jobs:
           aws ssm send-command \
             --instance-ids "i-0c0cd6433017a8e78" \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands": ["bash /home/ubuntu/environment/proyecto-st/scripts/deploy_ssm.sh"]}' \
+            --parameters '{"commands": ["sh /home/ssm-user/proyecto-st/scripts/deploy_ssm.sh"]}' \
             --region us-east-1
