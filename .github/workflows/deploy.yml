@@ -1,4 +1,4 @@
-name: Deploy Fintech App to EC2
+name: Deploy Fintech App via AWS SSM
 
 on:
   push:
@@ -11,22 +11,27 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v3
 
-      - name: Desplegar en AWS EC2 vía SSH
-        uses: appleboy/ssh-action@master
+      - name: Configurar credenciales de AWS
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          script: |
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
 
-            cd /home/ubuntu/environment/proyecto-st
-
-            git pull origin develop
-
-            if sudo docker compose up -d --build; then
-              echo "Despliegue exitoso en S.T.F."
-            else
-              echo "Error detectado. Iniciando Rollback..."
-              chmod +x scripts/rollback.sh
-              ./scripts/rollback.sh
-            fi
+      - name: Ejecutar comandos de despliegue vía SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids "i-0ec0c0457931eed44" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Despliegue automático de la Fintech S.T.F." \
+            --parameters '{
+              "commands": [
+                "cd /home/ubuntu/environment/proyecto-st",
+                "git pull origin develop",
+                "docker-compose down",
+                "docker-compose up -d --build",
+                "echo \"Despliegue completado con éxito\""
+              ]
+            }' \
+            --region us-east-1
