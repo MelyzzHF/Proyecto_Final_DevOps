@@ -1,3 +1,17 @@
-venv/
-__pycache__/
+# Credenciales y Seguridad
+*.pem
 .env
+.aws/
+credentials*
+
+# Instaladores de AWS (el que bajamos del agente)
+*.deb
+
+# Archivos de sistema y temporales
+.DS_Store
+node_modules/
+__pycache__/
+*.log
+
+# Carpetas de configuración de Cloud9
+.c9/
