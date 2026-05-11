@@ -1,5 +1,5 @@
 
-#Proyecto Final DevOps
+#Proyecto Final DevOps de Melissa Hernandez 
 
 ## Descripción
 Este proyecto implementa una arquitectura de nube robusta diseñada para una Fintech, enfocándose en la automatización, seguridad y alta disponibilidad mediante servicios de AWS.
